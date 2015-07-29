@@ -1,0 +1,77 @@
+apply plugin: 'android'
+apply plugin: 'maven'
+apply plugin: 'me.tatarka.retrolambda'
+
+buildscript {
+    repositories {
+        maven { url 'http://nexus:8081/nexus/content/groups/public' }
+        maven { url 'http://nexus:8081/nexus/content/groups/public-snapshots' }
+        mavenCentral()
+        mavenLocal()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:1.0.0'
+        classpath 'org.robolectric:robolectric-gradle-plugin:0.13.+'
+        classpath 'me.tatarka:gradle-retrolambda:2.5.0'
+    }
+}
+
+allprojects {
+    group = 'com.ldq'
+    version = '1.0'
+
+    repositories {
+        maven {
+            url "http://nexus:8081/nexus/content/groups/public"
+        }
+        maven {
+            url "http://nexus:8081/nexus/content/groups/public-snapshots"
+        }
+        mavenCentral()
+        mavenLocal()
+    }
+
+    tasks.withType(JavaCompile) { options.encoding = "UTF-8" }
+}
+
+android {
+    compileSdkVersion 21
+    buildToolsVersion "21.1.2"
+
+    defaultConfig {
+        applicationId "com.ldq.appinfo"
+        minSdkVersion 9
+        targetSdkVersion 21
+        versionCode 1
+        versionName "1.0"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles 'proguard-project.txt'
+        }
+
+        debug {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles 'proguard-project.txt'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    compile 'com.android.support:appcompat-v7:21.+'
+    compile 'com.android.support:support-v4:21.+'
+}
+
+configurations {
+    all*.exclude group: 'com.google.android', module: 'android'
+    all*.exclude group: 'com.google.android', module: 'support-v4'
+}
